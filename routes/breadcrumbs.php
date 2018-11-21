@@ -5,12 +5,14 @@ use App\Role;
 use App\Fuel;
 use App\PowerPlant;
 use App\PowerInfo;
+use App\DistributionInfo;
 use App\Distribution;
 use App\Map;
 use App\MapOption;
 use App\Slider;
 use App\General;
 use App\ManualCap;
+use App\HowTo;
 
 // Home
 Breadcrumbs::register('admin', function ($breadcrumbs) {
@@ -131,7 +133,7 @@ Breadcrumbs::register('power-info.create', function ($breadcrumbs) {
 Breadcrumbs::register('power-info.show', function ($breadcrumbs, $id) {
     $power_info = PowerInfo::find($id);
     $breadcrumbs->parent('power-info.index');
-    $breadcrumbs->push("view-Power-infomation", route('users.show', $power_info->id));
+    $breadcrumbs->push("view-Power-infomation", route('power-info.show', $power_info->id));
 });
 Breadcrumbs::register('power-info.edit', function ($breadcrumbs, $id) {
     $power_info = PowerInfo::find($id);
@@ -185,6 +187,26 @@ Breadcrumbs::register('distributions.edit', function ($breadcrumbs, $id) {
     $breadcrumbs->parent('distributions.index');
     $breadcrumbs->push("edit-distributions", route('distributions.edit', $dis->id));
 });
+// for Distribution Power information
+Breadcrumbs::register('distributions-info.index', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin');
+    $breadcrumbs->push('All-distributions-informition', route('distributions-info.index'));
+});
+
+Breadcrumbs::register('distributions-info.create', function ($breadcrumbs) {
+    $breadcrumbs->parent('distributions-info.index');
+    $breadcrumbs->push('Create-new-distributions-informition', route('distributions-info.create'));
+});
+Breadcrumbs::register('distributions-info.show', function ($breadcrumbs, $id) {
+    $distributioninfo = DistributionInfo::find($id);
+    $breadcrumbs->parent('distributions-info.index');
+    $breadcrumbs->push("view-distributions-info", route('distributions-info.show', $distributioninfo->id));
+});
+Breadcrumbs::register('distributions-info.edit', function ($breadcrumbs, $id) {
+    $distributioninfo = DistributionInfo::find($id);
+    $breadcrumbs->parent('distributions-info.index');
+    $breadcrumbs->push("edit-distribution-informition", route('distributions-info.edit', $distributioninfo->id));
+});
 // for slider
 Breadcrumbs::register('slider.index', function ($breadcrumbs) {
     $breadcrumbs->parent('admin');
@@ -226,4 +248,15 @@ Breadcrumbs::register('total-capacity.edit', function ($breadcrumbs, $id) {
     $general = General::find($id);
     $breadcrumbs->parent('total-capacity.index');
     $breadcrumbs->push("update-total-capacity", route('total-capacity.edit', $general->id));
+});
+// for help and about
+Breadcrumbs::register('howtos.index', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin');
+    $breadcrumbs->push('add-how-to', route('howtos.index'));
+});
+
+Breadcrumbs::register('howto.edit', function ($breadcrumbs, $id) {
+    $howto = HowTo::find($id);
+    $breadcrumbs->parent('howtos.index');
+    $breadcrumbs->push("update-how-to", route('howtos.edit', $howto->id));
 });

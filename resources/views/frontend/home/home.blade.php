@@ -197,7 +197,7 @@
             <table class="power-plant">
               <tr v-for="distribution in distributions" v-bind:key="distribution.id">
                 <td style="width: 33%;">
-                  @{{ distribution.name }}
+                  <a href="#" @click.prevent="DistributionShow(distribution.id)">@{{ distribution.name }}</a>
                 </td>
                 <td>@{{ distribution.demand }}</td>
                 <td>@{{ distribution.receive }} </td>
@@ -367,7 +367,7 @@
           <table class="power-plant">
             <tr v-for="distribution in distributions" v-bind:key="distribution.id">
               <td style="width: 33%;">
-                @{{ distribution.name }}
+                <a href="#" @click.prevent="ModalShow(distribution.id)">@{{ distribution.name }}</a>
               </td>
               <td>@{{ distribution.demand }}</td>
               <td>@{{ distribution.receive }} </td>
@@ -391,7 +391,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-capitalize">@{{ powerInfoPlant.name }}</h5>
+        <h5 class="modal-title text-capitalize" v-if="powerInfoPlant.name">@{{ powerInfoPlant.name }}</h5>
         <button type="button" class="close" @click="showModal = false">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -405,7 +405,7 @@
               </div>
               <div class="other_info">
                 <div class="text_info">
-                  <p>@{{ powerInfo.info }}</p>
+                  <p v-html="powerInfo.info"></p>
                 </div>
               </div>
             </div>
@@ -417,8 +417,7 @@
             <div class="main-popup">
               <div class="map" id="map" style="width: 75%; padding-right: 30px;">
                 <google-map :center="mainOptionMap" :zoom="mapZoom" map-type-id="terrain" style="width: 100%; height: 300px">
-                  <gmap-custom-marker :marker="marker">
-                    <img v-if="marker.icon" :src="'uploads/fuel/'+ marker.icon" alt="google marker" width="25">
+                  <gmap-custom-marker :marker="marker"> 
                   </gmap-custom-marker>
                 </google-map>
               </div>
@@ -583,7 +582,7 @@
               this.mainOptionMap.lat = res.data.main_lat; 
               this.mainOptionMap.lng = res.data.main_lng; 
               this.mapZoom = res.data.zoom; 
-               this.showModal = 'show';  
+              this.showModal = 'show';  
               
             });   
          },
@@ -592,7 +591,24 @@
          },
          isMobileBack(){ 
             this.isResult = false;
-         } 
+         },
+         /** 
+          * coding for distribution show
+          */
+          DistributionShow(id){
+            let url = "distribution/info/" + id;
+            let vm = this;
+            axios.get(url).then(res => { 
+              this.powerInfo = res.data;   
+              this.powerInfoPlant = res.data.distributions; 
+              this.marker.lat = res.data.lat; 
+              this.marker.lng = res.data.lng;  
+              this.mainOptionMap.lat = res.data.main_lat; 
+              this.mainOptionMap.lng = res.data.main_lng; 
+              this.mapZoom = res.data.zoom; 
+              this.showModal = 'show';   
+            });   
+          }
       },
 
        //for fetching data when page load

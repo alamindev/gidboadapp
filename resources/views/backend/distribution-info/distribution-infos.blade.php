@@ -1,5 +1,5 @@
 @extends('layouts/backend/layout') 
-@section('title') Powers info
+@section('title') Distribution 
 @endsection
  @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css') }}">
@@ -20,9 +20,9 @@
     <!--end Bread crumbs-->
     <!--coding for user heading-->
     <div class="heading">
-      <h3 class="font-bold col-teal">Powers info</h3>
-      @permission('create-infos',Auth::user())
-      <a href="{{ route('power-info.create') }}" class="btn btn-raised bg-blue-grey waves-effect text-white button-item"> <i class="material-icons">add_to_queue</i> &nbsp; <span  class="font-bold text-capitalize">Create</span></a>      @endpermission
+      <h3 class="font-bold col-teal">Distribution</h3>
+      @permission('create-distributioninfos',Auth::user())
+      <a href="{{ route('distributions-info.create') }}" class="btn btn-raised bg-blue-grey waves-effect text-white button-item"> <i class="material-icons">add_to_queue</i> &nbsp; <span  class="font-bold text-capitalize">Create</span></a>      @endpermission
     </div>
     <!--end user heading -->
     <div class="row clearfix">
@@ -31,8 +31,8 @@
           <thead>
             <tr>
               <th>Serial</th>
-              <th>Power Plant</th>
-              <th>Power Information</th>
+              <th>Distributions</th>
+              <th>distribution info</th>
               <th>Latitude</th>
               <th>Longitude</th>
               <th>Manages</th>
@@ -40,22 +40,22 @@
           </thead>
           <tbody>
             @php $i=1; 
-@endphp @foreach ($power_infos as $power)
+@endphp @foreach ($distributions as $data)
             <tr>
               <td>{{ $i++ }}</td>
-              <td>{{ $power->power_plant->name }}</td>
-              <td>{{ str_limit($power->info,50) }}</td>
+              <td>{{ $data->distributions->name }}</td>
+              <td>{!! str_limit($data->info,50) !!}</td>
               <td>
-                {{ $power->lat }}
+                {{ $data->lat }}
               </td>
               <td>
-                {{ $power->lng }}
-              </td> 
+                {{ $data->lng }}
+              </td>
               <td class="has-text-right">
-                @permission('read-infos',Auth::user())
-                <a class="btn btn-success bg-teal waves-effect btn-sm  ml-1" href="{{route('power-info.show', $power->id)}}"><i class="far fa-eye text-white"></i></a>                @endpermission @permission('update-infos',Auth::user())
-                <a class="btn btn-raised bg-teal waves-effect btn-sm  ml-1" href="{{route('power-info.edit', $power->id)}}"><i class="far fa-edit text-white"></i></a>                @endpermission @permission('delete-infos',Auth::user())
-                <a class="btn btn-raised bg-pink waves-effect btn-sm" href="{{ route('power-info.delete',$power->id) }}"><i class="fas fa-trash text-white"></i></a>                @endpermission
+                @permission('read-distributioninfos',Auth::user())
+                <a class="btn btn-success bg-teal waves-effect btn-sm  ml-1" href="{{route('distributions-info.show', $data->id)}}"><i class="far fa-eye text-white"></i></a>                @endpermission @permission('update-distributioninfos',Auth::user())
+                <a class="btn btn-raised bg-teal waves-effect btn-sm  ml-1" href="{{route('distributions-info.edit', $data->id)}}"><i class="far fa-edit text-white"></i></a>                @endpermission @permission('delete-distributioninfos',Auth::user())
+                <a class="btn btn-raised bg-pink waves-effect btn-sm" href="{{ route('distributions-info.delete',$data->id) }}" onclick="return confirm('Are you sure?')"><i class="fas fa-trash text-white"></i></a>                @endpermission
               </td>
             </tr>
             @endforeach

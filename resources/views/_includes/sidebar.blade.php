@@ -45,11 +45,13 @@
             <li class="{{ Nav::isRoute('general-setting') }}"> <a href="{{ route('general-setting.index') }}">
              <i class="fa fa-cogs"></i>
                 <span>General Setting</span> </a> </li>
-            @endpermission @permission('fuels-index',Auth::user())
+            @endpermission
+             @permission('fuels-index',Auth::user())
             <li class="{{ Nav::isRoute('fuels') }}"> <a href="{{ route('fuels.index') }}">
              <i class="material-icons">brightness_4</i>
                 <span>Fuels</span> </a> </li>
-            @endpermission @permission('plants-index',Auth::user())
+            @endpermission
+             @permission('plants-index',Auth::user())
             <li class="{{ Nav::isRoute('powers') }}"> <a href="{{ route('powers.index') }}">
                <i class="material-icons">gamepad</i>
                 <span>Powers Plant</span> </a> </li>
@@ -57,11 +59,18 @@
             <li class="{{ Nav::isRoute('power-info') }}"> <a href="{{ route('power-info.index') }}">
                 <i class="material-icons">stars</i>
                 <span>Powers info (popup)</span> </a> </li>
-            @endpermission @permission('distributions-index',Auth::user())
+            @endpermission 
+            @permission('distributions-index',Auth::user())
             <li class="{{ Nav::isRoute('distributions') }}"> <a href="{{ route('distributions.index') }}">
                 <i class="material-icons">import_export</i>
                 <span>Distribution</span> </a> </li>
-            @endpermission @permission('create-capacities',Auth::user())
+            @endpermission
+            @permission('distributioninfos-index',Auth::user())
+            <li class="{{ Nav::isRoute('distributions-info') }}"> <a href="{{ route('distributions-info.index') }}">
+                <i class="fas fa-wrench"></i>
+                <span>Distribution Info</span> </a> </li>
+            @endpermission 
+             @permission('create-capacities',Auth::user())
             <li class="{{ Nav::isRoute('total-capacity') }}"> <a href="{{ route('total-capacity.index') }}">
               <i class="material-icons">group_work</i>
                 <span>Total Capacity</span> </a> </li>
@@ -69,11 +78,19 @@
             <li class="{{ Nav::isRoute('manuals') }}"> <a href="{{ route('manuals.index') }}">
               <i class="fa fa-cross"></i>
                 <span>Manual Capacity</span> </a> </li>
-            @endpermission @permission('sliders-index',Auth::user())
+            @endpermission
+             @permission('sliders-index',Auth::user())
             <li class="{{ Nav::isRoute('slider') }}"> <a href="{{ route('slider.index') }}">
                 <i class="material-icons">Slider</i>
                 <span>Slider</span> </a> </li>
-            @endpermission @permission(['options-index','maps-index'])
+            @endpermission 
+             @permission('howtos-index',Auth::user())
+            <li class="{{ Nav::isRoute('howtos') }}"> <a href="{{ route('howtos.index') }}">
+               <i class="fa fa-deaf"></i>
+                <span>About and help</span> </a> </li>
+            @endpermission 
+        
+            @permission(['options-index','maps-index'])
             <li class="{{ Nav::isResource('map-option') }} {{ Nav::isResource('map-info') }}">
                 <a href="javascript:void(0); " class="menu-toggle">
                                     <i class=" zmdi zmdi-delicious "></i><span>Map</span> </a>

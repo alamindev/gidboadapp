@@ -11,9 +11,11 @@ use App\TotalCap;
 use App\MapOption;
 use App\General;
 use App\PowerInfo;
+use App\HowTo;
 use Carbon\Carbon;
 use App\PowerPlant;
 use App\Distribution;
+use App\DistributionInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -207,7 +209,8 @@ class HomeController extends Controller
      */
     public function HelpAbout()
     {
-        return view('frontend.helpabout.helpabout');
+        $aboutandhow = HowTo::first();
+        return view('frontend.helpabout.helpabout',compact('aboutandhow'));
     }
     /*------------------------------------------------------
      *
@@ -251,4 +254,16 @@ class HomeController extends Controller
 
         return response()->json($data)->setEncodingOptions(JSON_NUMERIC_CHECK);
     }
+    /**
+     * 
+     * start coding for distribution info method
+     * 
+     */
+    public function DistributionInfo($id){
+        $distributioninfo = DistributionInfo::with('distributions')->where('distribution_id', $id)->first();
+          
+        return response()->json($distributioninfo)->setEncodingOptions(JSON_NUMERIC_CHECK);
+    }
+
+    
 }

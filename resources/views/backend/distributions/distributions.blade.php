@@ -34,6 +34,7 @@
               <th>Disco Name</th>
               <th>Demand</th>
               <th>Receive</th>
+              <th>Add Info</th>
               <th>Manages</th>
             </tr>
           </thead>
@@ -46,6 +47,10 @@
               <td>{{ $data->demand }}</td>
               <td>
                 {{ $data->receive }}
+              </td>
+              <td>
+                @permission('create-distributioninfos',Auth::user())
+                <a class="btn btn-raised bg-indigo waves-effect btn-sm text-white ml-1" href="{{ route('distributions-info.create',$data->id) }}">distribution-info</a>                @endpermission
               </td>
               <td class="has-text-right">
                 @permission('update-distributions',Auth::user())

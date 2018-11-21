@@ -33,10 +33,14 @@ Route::prefix('admin')->group(function () {
     Route::resource('distributions', 'DistributionController');
     Route::get('distributions/delete/{id}', 'DistributionController@destroy')->name('distributions.delete');
 
-
+//power infos
     Route::resource('power-info', 'PowerInfoController');
     Route::get('power-info/create/{id?}', 'PowerInfoController@create')->name('power-info.create');
     Route::get('power-info/delete/{id}', 'PowerInfoController@destroy')->name('power-info.delete');
+    //distribution infos
+    Route::resource('distributions-info', 'DistributionInfoController');
+    Route::get('distributions-info/create/{id?}', 'DistributionInfoController@create')->name('distributions-info.create');
+    Route::get('distributions-info/delete/{id}', 'DistributionInfoController@destroy')->name('distributions-info.delete');
     // coding for slider
     Route::resource('slider', 'SliderController');
     Route::get('slider/delete/{id}', 'SliderController@destroy')->name('slider.delete');
@@ -47,6 +51,8 @@ Route::prefix('admin')->group(function () {
     Route::get('map-info/delete/{id}', 'MapController@destroy')->name('map-info.delete');
     Route::resource('map-option', 'MapOptionController');
     Route::resource('total-capacity', 'TotalCapController');
+    Route::resource('howtos', 'HowToController');
+    Route::resource('howtos', 'HowToController');
 });
  
  //for fronend route
@@ -73,4 +79,5 @@ Route::get('total-capacity', 'HomeController@totalCapacity')->name('get.totalCap
 Route::get('how-the-grid-works', 'HomeController@HowItWork')->name('get.HowItWork');
 Route::get('help-and-about', 'HomeController@HelpAbout')->name('get.HelpAbout');
 Route::get('total-capacity/chart', 'HomeController@CapacityChart')->name('get.capchart');
- 
+ // start coding for distribution show route
+Route::get('/distribution/info/{id}', 'HomeController@DistributionInfo')->name('get.distributionInfo');

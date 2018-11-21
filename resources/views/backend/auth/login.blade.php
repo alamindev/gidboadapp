@@ -7,7 +7,7 @@
         <div class="row clearfix">
             <div class="col-lg-8 col-md-12 col-sm-12">
                 <div class="l-detail">
-                    <h1>Welcome </h1>
+                <h1>Welcome </h1> 
                 </div>
             </div>
             <div class="col-lg-4 col-md-12 col-sm-12">
