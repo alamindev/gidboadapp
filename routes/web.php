@@ -70,13 +70,13 @@ Route::get('/plant-map/map/{id}', 'HomeController@mapById')->name('get.map.id');
 
  // start cdoing for generation route
 Route::get('generation-demand', 'HomeController@Generation')->name('get.generation');
-Route::get('todays-trends', 'HomeController@Trends')->name('get.trends');
+Route::get('todays-data', 'HomeController@Trends')->name('get.trends');
 Route::get('todays-trends/tempfuel', 'HomeController@tempFuel')->name('get.tempFuel');
 
 
 Route::get('carbon-emissions', 'HomeController@CarbonEmission')->name('get.CarbonEmission');
-Route::get('total-capacity', 'HomeController@totalCapacity')->name('get.totalCapacity');
-Route::get('how-the-grid-works', 'HomeController@HowItWork')->name('get.HowItWork');
+Route::get('installed-capacity', 'HomeController@totalCapacity')->name('get.totalCapacity');
+Route::get('power-value-chain', 'HomeController@HowItWork')->name('get.HowItWork');
 Route::get('help-and-about', 'HomeController@HelpAbout')->name('get.HelpAbout');
 Route::get('total-capacity/chart', 'HomeController@CapacityChart')->name('get.capchart');
  // start coding for distribution show route

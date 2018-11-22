@@ -76,7 +76,7 @@ class PermissionController extends Controller
             $permission->per_table = $request->per_table;
             $permission->save();
 
-            toast('Successfully created the new '. $permission->display_name . ' permission in the database!', 'error', 'top-right')->autoClose(5000);
+            toast('Successfully created the new '. $permission->display_name . ' permission in the database!', 'success', 'top-right')->autoClose(5000);
             return redirect()->route('permissions.index');
         } elseif ($request->permission_type == 'crud') {
             if (Permission::where('per_table', '=', $request->per_table)->exists()) {

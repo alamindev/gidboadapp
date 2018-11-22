@@ -72427,14 +72427,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     var url = "todays-trends/tempfuel";
     var vm = this;
     axios.get(url).then(function (res) {
-      _this.dataset = res.data;
+      _this.labels = res.data[0].labels;
+      _this.backgroundColor = res.data[0].backgroundColor;
+      _this.data = res.data[0].data;
       _this.chartRender();
     });
   },
   // end mounted 
   data: function data() {
     return {
-      dataset: []
+      labels: '',
+      backgroundColor: '',
+      data: ''
     };
   },
 
@@ -72442,8 +72446,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     chartRender: function chartRender() {
       // Overwriting base render method with actual data.
       this.renderChart({
-        labels: ['0:00', '', '3:00', '', '', '6:00', '', '', '9:00', '', '', '12:00', '', '', '15:00', '', '', '18:00', '', '', '21:00', '', '', '24:00'],
-        datasets: this.dataset
+        labels: this.labels,
+        datasets: [{
+          backgroundColor: this.backgroundColor,
+          data: this.data
+        }]
       }, {
         legend: {
           display: false
@@ -72452,15 +72459,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         maintainAspectRatio: false,
         scales: {
           xAxes: [{
-            stacked: true,
             categoryPercentage: 0.5,
-            barPercentage: 1.5
+            barPercentage: .5
           }],
           yAxes: [{
-            stacked: true,
             ticks: {
               suggestedMin: 50,
-              suggestedMax: 30000,
+              suggestedMax: 20000,
               callback: function callback(label, index, labels) {
                 if (label <= 1000) {
                   return label / 1000;

@@ -48,23 +48,11 @@ class TotalCapController extends Controller
     public function store(Request $request)
     {
         if (auth()->user()->can('update-capacities')) {
-            $this->validate($request, [
-                'nuclear' => 'required',
-                'gas' => 'required',
-                'hydro' => 'required',
-                'wind' => 'required',
-                'biofuel' => 'required',
-                'solar' => 'required',
+            $this->validate($request, [ 
                 'info_pie' => 'required',
                 'supply_mix' => 'required',
             ]);
-            $capacity = new TotalCap();
-            $capacity->nuclear = $request->nuclear;
-            $capacity->gas = $request->gas;
-            $capacity->hydro = $request->hydro;
-            $capacity->wind = $request->wind;
-            $capacity->biofuel = $request->biofuel;
-            $capacity->solar = $request->solar;
+            $capacity = new TotalCap(); 
             $capacity->info_pie = $request->info_pie;
             $capacity->supply_mix = $request->supply_mix;
             $capacity->save();
@@ -85,23 +73,11 @@ class TotalCapController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'nuclear' => 'required',
-            'gas' => 'required',
-            'hydro' => 'required',
-            'wind' => 'required',
-            'biofuel' => 'required',
-            'solar' => 'required',
+        $this->validate($request, [ 
             'info_pie' => 'required',
             'supply_mix' => 'required',
         ]);
-        $capacity = TotalCap::find($id);
-        $capacity->nuclear = $request->nuclear;
-        $capacity->gas = $request->gas;
-        $capacity->hydro = $request->hydro;
-        $capacity->wind = $request->wind;
-        $capacity->biofuel = $request->biofuel;
-        $capacity->solar = $request->solar;
+        $capacity = TotalCap::find($id); 
         $capacity->info_pie = $request->info_pie;
         $capacity->supply_mix = $request->supply_mix;
         $capacity->save();

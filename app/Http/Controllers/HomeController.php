@@ -218,26 +218,27 @@ class HomeController extends Controller
      *--------------------------------------------------------
      */
     public function Trends()
-    {
-
-        return view('frontend.trends.trend');
+    { 
+         return view('frontend.trends.trend');
     }
     public function tempFuel()
     {
-        $fuels = Fuel::select('id', 'name', 'logo', 'bg_color as backgroundColor')->get()->map(function ($item) {
-            $backup = Backup::where('fuel_id', $item->id)
-                ->where('plant_date', Carbon::today())
-                ->select([
-                    DB::raw("concat(total_output) as total")
-                ])
-                ->get()
-                ->map(function ($item) {
-                    return $item['total'];
-                });
-            $item['data'] = $backup;
-            return $item;
-        });
-        return response()->json($fuels)->setEncodingOptions(JSON_NUMERIC_CHECK);
+    $bgColor = Fuel::pluck('bg_color');
+     $fuels = Fuel::get(); 
+     $data = [];
+     foreach($fuels as $fuel){
+          $data[] = PowerPlant::where('fuel_id',$fuel->id)->sum('output');
+     } 
+     $label = Fuel::pluck('name');
+
+     $data =  [0 => 
+          [
+              'labels' => $label, 
+              'backgroundColor' => $bgColor,
+              'data' => $data
+          ], 
+         ];
+        return response()->json($data)->setEncodingOptions(JSON_NUMERIC_CHECK);
     }
 
 

@@ -8,31 +8,22 @@ export default {
   mounted() {
     let url = "todays-trends/tempfuel";
     let vm = this;
-    axios.get(url).then(res => {  
-      this.labels = res.data[0].labels;
-      this.backgroundColor = res.data[0].backgroundColor;
-      this.data = res.data[0].data; 
+    axios.get(url).then(res => {
+      this.dataset = res.data
       this.chartRender()
     });
   }, // end mounted 
   data() {
-    return { 
-      labels: '',
-      backgroundColor: '',
-      data: '',
+    return {
+      dataset: []
     }
   },
   methods: {
     chartRender() {
       // Overwriting base render method with actual data.
       this.renderChart({
-        labels: this.labels,
-        datasets: [
-          { 
-            backgroundColor: this.backgroundColor,
-            data: this.data
-          }
-        ]
+        labels: ['0:00', '', '3:00', '', '', '6:00', '', '', '9:00', '', '', '12:00', '', '', '15:00', '', '', '18:00', '', '', '21:00', '', '', '24:00'],
+        datasets: this.dataset
       }, {
         legend: {
           display: false,
@@ -40,14 +31,16 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          xAxes: [{ 
+          xAxes: [{
+            stacked: true,
             categoryPercentage: 0.5,
-            barPercentage: .5
+            barPercentage: 1.5
           }],
-          yAxes: [{ 
+          yAxes: [{
+            stacked: true,
             ticks: {
               suggestedMin: 50,
-              suggestedMax: 20000,
+              suggestedMax: 30000,
               callback: function (label, index, labels) {
                 if (label <= 1000) {
                   return label / 1000;

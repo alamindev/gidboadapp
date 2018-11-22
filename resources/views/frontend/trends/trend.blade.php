@@ -24,24 +24,9 @@
  @push('scripts')
 <script>
   var app = new Vue({
-        el: '#app', 
-        data(){
-          return {
-            dataset: []
-          } 
-        }
+        el: '#app',  
     });
 
-</script>
-
-
-
-
-
-
-
-
-
-
+</script> 
 
 @endpush
