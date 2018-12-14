@@ -17,8 +17,11 @@ class CreatePowerInfosTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('power_id');
             $table->string('logo')->default('photo');
-            $table->string('lat');
-            $table->string('lng');
+            $table->string('map_lat');
+            $table->string('map_lng');
+            $table->string('zoom');
+            $table->string('marker_lat');
+            $table->string('marker_lng'); 
             $table->text('address')->nullable();
             $table->string('email')->nullable();
             $table->string('fax')->nullable();

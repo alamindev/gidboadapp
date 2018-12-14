@@ -418,6 +418,7 @@
               <div class="map" id="map" style="width: 75%; padding-right: 30px;">
                 <google-map :center="mainOptionMap" :zoom="mapZoom" map-type-id="terrain" style="width: 100%; height: 300px">
                   <gmap-custom-marker :marker="marker"> 
+                      <img :src="'uploads/fuel/'+ marker.icon" alt="Nuclear" width="25">
                   </gmap-custom-marker>
                 </google-map>
               </div>
@@ -432,16 +433,16 @@
                   </ul>
                   <ul class="social-link">
                     <li v-if="powerInfo.twitter != null">
-                      <a :href="powerInfo.twitter" title="Go to Twitter"><i class="fa fa-twitter"></i></a>
+                      <a :href="powerInfo.twitter" target="_blank" title="Go to Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
                     <li v-if="powerInfo.facebook != null">
-                      <a :href="powerInfo.facebook" title="Go to Facebook"><i class="fa fa-facebook"></i></a>
+                      <a :href="powerInfo.facebook"  target="_blank" title="Go to Facebook"><i class="fa fa-facebook"></i></a>
                     </li>
                     <li v-if="powerInfo.youtube != null">
-                      <a :href="powerInfo.youtube" title="Go to Youtube"><i class="fa fa-youtube"></i></a>
+                      <a :href="powerInfo.youtube"  target="_blank" title="Go to Youtube"><i class="fa fa-youtube"></i></a>
                     </li>
                     <li v-if="powerInfo.website != null">
-                      <a :href="powerInfo.website" title="Go to Website"><i class="fa fa-globe"></i></a>
+                      <a :href="powerInfo.website"  target="_blank" title="Go to Website"><i class="fa fa-globe"></i></a>
                     </li>
                   </ul>
                 </div>
@@ -576,11 +577,11 @@
             axios.get(url).then(res => {
               this.powerInfo = res.data;  
               this.powerInfoPlant = res.data.power_plant; 
-              this.marker.lat = res.data.lat; 
-              this.marker.lng = res.data.lng; 
+              this.marker.lat = res.data.marker_lat; 
+              this.marker.lng = res.data.marker_lng; 
               this.marker.icon = res.data.fuels.map_icon; 
-              this.mainOptionMap.lat = res.data.main_lat; 
-              this.mainOptionMap.lng = res.data.main_lng; 
+              this.mainOptionMap.lat = res.data.map_lat; 
+              this.mainOptionMap.lng = res.data.map_lng; 
               this.mapZoom = res.data.zoom; 
               this.showModal = 'show';  
               

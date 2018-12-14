@@ -21,7 +21,7 @@ class MapOptionController extends Controller
         try {
             if (!MapOption::count()) {
                 if (auth()->user()->can('create-options')) {
-                    return view('backend.map-options.map-options');
+                    return view('backend.map-option.map-options');
                 } else {
                     return redirect(route('admin'));
                 }

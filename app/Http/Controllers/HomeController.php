@@ -33,8 +33,8 @@ class HomeController extends Controller
     {
         $powerPlants = PowerPlant::latest('updated_at')->select('updated_at')->first();
         if ($powerPlants) {
-            $addhour = Carbon::parse($powerPlants->updated_at)->addHour(1)->format('g A');
-            $carbon = Carbon::parse($powerPlants->updated_at)->format('D M j, g A');
+            $addhour = Carbon::now()->addHour(1)->format('g A');
+            $carbon = Carbon::now()->format('D M j, g A');
             $hour = $carbon . " - " . $addhour;
             $manual = ManualCap::first();
             $capacity = Fuel::sum('install_cap');
@@ -105,11 +105,8 @@ class HomeController extends Controller
         $fuel = PowerPlant::where('fuel_id', $powerinfo->power_plant->fuel_id)
             ->with('fuels')
             ->select('name', 'fuel_id')
-            ->first();
-        $map_api = MapOption::select('lat as main_lat', 'lng as main_lng', 'zoom')->first();
-
-        $collection = collect($powerinfo)->merge($fuel);
-        $collection = collect($collection)->merge($map_api);
+            ->first(); 
+        $collection = collect($powerinfo)->merge($fuel); 
         return response()->json($collection)->setEncodingOptions(JSON_NUMERIC_CHECK);
     }
     /**

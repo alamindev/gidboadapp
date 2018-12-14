@@ -154,9 +154,17 @@ export default {
       });
     },
     copyUrl(id) {
-      let url = document.querySelector("#url" + id);
-      url.setAttribute("type", "text");
-      url.select();
+      let testingCodeToCopy = document.querySelector("#url" + id);
+      testingCodeToCopy.setAttribute("type", "text");
+      testingCodeToCopy.select();
+
+      try {
+        var successful = document.execCommand("copy");
+        var msg = successful ? "successful" : "unsuccessful";
+        alert("Link Copy SuccessFull" + msg);
+      } catch (err) {
+        alert("Oops, unable to copy");
+      }
       window.getSelection().removeAllRanges();
     },
     DeleteData(id) {

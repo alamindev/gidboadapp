@@ -41,15 +41,30 @@
                 <span class="text-danger">{{ $errors->has('info') ? $errors->first('info') : '' }}</span>
               </div>
               <h3>Add Google Map Latitude and Longitude</h3>
-              <div class="form-group {{ $errors->has('lat') ? 'is-invalid' : '' }}">
-                <label for="lat">Latitude <span class="text-danger">(Requried)</span></label>
-                <input type="text" class="form-control" name="lat" value="{{ $edit->lat }}">
-                <span class="text-danger">{{ $errors->has('lat') ? $errors->first('lat') : '' }}</span>
+              <div class="form-group {{ $errors->has('map_lat') ? 'is-invalid' : '' }}">
+                <label for="map_lat">Map Latitude <span class="text-danger">(Requried)</span></label>
+                <input type="text" class="form-control" name="map_lat" value="{{ $edit->map_lat }}">
+                <span class="text-danger">{{ $errors->has('map_lat') ? $errors->first('map_lat') : '' }}</span>
               </div>
-              <div class="form-group {{ $errors->has('lng') ? 'is-invalid' : '' }}">
-                <label for="lng">Longitude <span class="text-danger">(Requried)</span></label>
-                <input type="text" class="form-control" name="lng" value="{{ $edit->lng }}">
-                <span class="text-danger">{{ $errors->has('lng') ? $errors->first('lng') : '' }}</span>
+              <div class="form-group {{ $errors->has('map_lng') ? 'is-invalid' : '' }}">
+                <label for="map_lng">Map Longitude <span class="text-danger">(Requried)</span></label>
+                <input type="text" class="form-control" name="map_lng" value="{{ $edit->map_lng }}">
+                <span class="text-danger">{{ $errors->has('map_lng') ? $errors->first('map_lng') : '' }}</span>
+              </div>
+              <div class="form-group {{ $errors->has('zoom') ? 'is-invalid' : '' }}">
+                <label for="zoom">Map Zoom <span class="text-danger">(Requried)</span></label>
+                <input type="text" class="form-control" name="zoom" value="{{ $edit->zoom }}">
+                <span class="text-danger">{{ $errors->has('zoom') ? $errors->first('zoom') : '' }}</span>
+              </div>
+              <div class="form-group {{ $errors->has('marker_lat') ? 'is-invalid' : '' }}">
+                <label for="marker_lat">Marker Latitude <span class="text-danger">(Requried)</span></label>
+                <input type="text" class="form-control" name="marker_lat" value="{{ $edit->marker_lat }}">
+                <span class="text-danger">{{ $errors->has('marker_lat') ? $errors->first('marker_lat') : '' }}</span>
+              </div>
+              <div class="form-group {{ $errors->has('marker_lng') ? 'is-invalid' : '' }}">
+                <label for="marker_lng">Marker Longitude <span class="text-danger">(Requried)</span></label>
+                <input type="text" class="form-control" name="marker_lng" value="{{ $edit->marker_lng }}">
+                <span class="text-danger">{{ $errors->has('marker_lng') ? $errors->first('marker_lng') : '' }}</span>
               </div>
               <div class="form-group">
                 <label for="logo">Main Logo <span class="text-danger ">(Optional)</span></label>

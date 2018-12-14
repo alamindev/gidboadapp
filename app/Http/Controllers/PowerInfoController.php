@@ -59,16 +59,22 @@ class PowerInfoController extends Controller
         $this->validate($request, [
             'power_id' => 'required',
             'info' => 'required',
-            'lat' => 'required|numeric',
-            'lng' => 'required|numeric',
+            'map_lat' => 'required|numeric',
+            'map_lng' => 'required|numeric',
+            'marker_lat' => 'required|numeric',
+            'marker_lng' => 'required|numeric',
+            'zoom' => 'required|numeric',
         ]);
         $fileName = $this->logoUpload($request);
 
         $power_info = new PowerInfo();
         $power_info->power_id = $request->power_id;
         $power_info->info = $request->info;
-        $power_info->lat = $request->lat;
-        $power_info->lng = $request->lng;
+        $power_info->map_lat = $request->map_lat;
+        $power_info->map_lng = $request->map_lng;
+        $power_info->marker_lat = $request->marker_lat;
+        $power_info->marker_lng = $request->marker_lng; 
+        $power_info->zoom = $request->zoom; 
         $power_info->logo = $fileName ? $fileName : 'photo';
         $power_info->address = $request->address;
         $power_info->email = $request->email;
@@ -136,15 +142,21 @@ class PowerInfoController extends Controller
     {
         $this->validate($request, [
             'info' => 'required',
-            'lat' => 'required|numeric',
-            'lng' => 'required|numeric',
+            'map_lat' => 'required|numeric',
+            'map_lng' => 'required|numeric',
+            'marker_lat' => 'required|numeric',
+            'marker_lng' => 'required|numeric',
+            'zoom' => 'required|numeric',
         ]);
         $fileName = $this->logoUpdate($request, $id);
 
         $power_info = PowerInfo::find($id);
         $power_info->info = $request->info;
-        $power_info->lat = $request->lat;
-        $power_info->lng = $request->lng;
+        $power_info->map_lat = $request->map_lat;
+        $power_info->map_lng = $request->map_lng;
+        $power_info->marker_lat = $request->marker_lat;
+        $power_info->marker_lng = $request->marker_lng; 
+        $power_info->zoom = $request->zoom; 
         $power_info->logo = $fileName;
         $power_info->address = $request->address;
         $power_info->email = $request->email;

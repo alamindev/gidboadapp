@@ -40,14 +40,29 @@
                   <td>{{ $show->info }}</td>
                 </tr>
                 <tr>
-                  <th>Latitude</th>
+                  <th>Map Latitude</th>
                   <td> :</td>
-                  <td>{{ $show->lat }}</td>
+                  <td>{{ $show->map_lat }}</td>
                 </tr>
                 <tr>
-                  <th>Longitude</th>
+                  <th>Map Longitude</th>
                   <td> :</td>
-                  <td>{{ $show->lng }}</td>
+                  <td>{{ $show->map_lng }}</td>
+                </tr>
+                <tr>
+                  <th>Map Zoom</th>
+                  <td> :</td>
+                  <td>{{ $show->zoom }}</td>
+                </tr>
+                <tr>
+                  <th>Marker Latitude</th>
+                  <td> :</td>
+                  <td>{{ $show->marker_lat }}</td>
+                </tr>
+                <tr>
+                  <th>Marker Longitude</th>
+                  <td> :</td>
+                  <td>{{ $show->marker_lng }}</td>
                 </tr>
                 <tr>
                   <th>Logo</th>
