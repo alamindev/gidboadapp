@@ -432,16 +432,16 @@
                   </ul>
                   <ul class="social-link">
                     <li v-if="powerInfo.twitter != null">
-                      <a href="#" title="Go to Twitter"><i class="fa fa-twitter"></i></a>
+                      <a :href="powerInfo.twitter" title="Go to Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
                     <li v-if="powerInfo.facebook != null">
-                      <a href="#" title="Go to Facebook"><i class="fa fa-facebook"></i></a>
+                      <a :href="powerInfo.facebook" title="Go to Facebook"><i class="fa fa-facebook"></i></a>
                     </li>
                     <li v-if="powerInfo.youtube != null">
-                      <a href="#" title="Go to Youtube"><i class="fa fa-youtube"></i></a>
+                      <a :href="powerInfo.youtube" title="Go to Youtube"><i class="fa fa-youtube"></i></a>
                     </li>
                     <li v-if="powerInfo.website != null">
-                      <a href="#" title="Go to Website"><i class="fa fa-globe"></i></a>
+                      <a :href="powerInfo.website" title="Go to Website"><i class="fa fa-globe"></i></a>
                     </li>
                   </ul>
                 </div>

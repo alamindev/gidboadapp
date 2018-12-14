@@ -51,8 +51,11 @@ Route::prefix('admin')->group(function () {
     Route::get('map-info/delete/{id}', 'MapController@destroy')->name('map-info.delete');
     Route::resource('map-option', 'MapOptionController');
     Route::resource('total-capacity', 'TotalCapController');
-    Route::resource('howtos', 'HowToController');
-    Route::resource('howtos', 'HowToController');
+    Route::resource('howtos', 'HowToController'); 
+    Route::post('howtos/upload', 'HowToController@howToUpload')->name('upload.howto'); 
+    Route::get('howtos/upload/all', 'HowToController@howToUploadAll')->name('uploadall.howto'); 
+    Route::get('howtos/upload/delete/{id}', 'HowToController@howToDeleteImg')->name('howToDeleteImg');  
+    Route::get('howtos/base-url', 'HowToController@show')->name('getBaseUrl');  
 });
  
  //for fronend route

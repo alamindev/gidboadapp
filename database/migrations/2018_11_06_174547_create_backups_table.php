@@ -19,6 +19,7 @@ class CreateBackupsTable extends Migration
             $table->string('total_output');
             $table->time('plant_time');
             $table->date('plant_date');
+            $table->string('time');
             $table->foreign('fuel_id')->references('id')->on('fuels')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

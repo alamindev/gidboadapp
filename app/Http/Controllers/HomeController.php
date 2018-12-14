@@ -20,8 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use App\ManualCap;
-
+use App\ManualCap; 
 class HomeController extends Controller
 {
 
@@ -218,30 +217,168 @@ class HomeController extends Controller
      *--------------------------------------------------------
      */
     public function Trends()
-    { 
-         return view('frontend.trends.trend');
+    {    
+        
+          return view('frontend.trends.trend');
+ 
     }
     public function tempFuel()
     {
-    $bgColor = Fuel::pluck('bg_color');
-     $fuels = Fuel::get(); 
-     $data = [];
-     foreach($fuels as $fuel){
-          $data[] = PowerPlant::where('fuel_id',$fuel->id)->sum('output');
-     } 
-     $label = Fuel::pluck('name');
+        $subday = Carbon::now()->subDays(1)->format('Y-m-d');
+        $subday1 = Carbon::now()->subDays(2)->format('Y-m-d');
+        $subday2 = Carbon::now()->subDays(3)->format('Y-m-d');
+        $subday3 = Carbon::now()->subDays(4)->format('Y-m-d');
+        $subday4 = Carbon::now()->subDays(5)->format('Y-m-d');
+        $today = Carbon::now()->format('Y-m-d');
+        $backupdata = Backup::select('plant_date')->get();
+        $Hour  = Backup::latest()->first();  
+        $latesthour =  $Hour->time; //find out time only for where clause in down 
+        global $data; 
+        
+        //foreach loop for subdata
+        foreach($backupdata as $backup){ 
+            $data = $backup->plant_date; 
+        }//end backup foreach loop   
+        $length = 24;  
+        $datas = [];
+        for($i=0; $i < $length; $i++){  
+            $filter = sprintf("%02d", $i); 
+            if($filter == $i){ 
+                if($data == $today){  
+                        $times = Backup::where('plant_date',$today)  
+                        ->where('time',$filter)
+                        ->select('time')
+                        ->first();  
+                        if($times != ''){
+                            $datas[] = Backup::where('plant_date',$today)  
+                            ->where('time',$filter)
+                            ->select('id','fuel_id','total_output')
+                            ->get();  
+                        }else{ 
+                            $datas[] = Backup::where('plant_date',$today)  
+                            ->where('time',$latesthour)
+                            ->select('id','fuel_id','total_output') 
+                            ->get(); 
+                        }     
+                 }elseif($data == $subday){   
+                    $datas[] = Backup::where('plant_date',$subday)  
+                        ->where('time',$latesthour)
+                        ->select('id','fuel_id','total_output') 
+                        ->get();
+                 }elseif($data == $subday1){   
+                    $datas[] = Backup::where('plant_date',$subday1)  
+                        ->where('time',$latesthour)
+                        ->select('id','fuel_id','total_output') 
+                        ->get();
+                 }
+                 elseif($data == $subday2){   
+                    $datas[] = Backup::where('plant_date',$subday2)  
+                        ->where('time',$latesthour)
+                        ->select('id','fuel_id','total_output') 
+                        ->get();
+                 }elseif($data == $subday3){   
+                    $datas[] = Backup::where('plant_date',$subday3)  
+                        ->where('time',$latesthour)
+                        ->select('id','fuel_id','total_output') 
+                        ->get();
+                 }elseif($data == $subday4){   
+                    $datas[] = Backup::where('plant_date',$subday4)  
+                        ->where('time',$latesthour)
+                        ->select('id','fuel_id','total_output') 
+                        ->get();
+                 }
+            }   
+            
+             $now =  Carbon::now()->format('H');
+             if($now == $filter){
+                  break;
+             }   
+        }
+         $collections = collect($datas)->flatten(1)->groupBy('fuel_id')->toArray(); 
+           
+        foreach($collections as $collection){ 
+             foreach($collection as $main){  
+                if($main['fuel_id'] == 1){
+                    $firstItem[] = $main;
+                }
+                if($main['fuel_id'] == 2){
+                    $secontItem[] = $main;
+                }
+                // if($main['fuel_id'] == 3){
+                //     $thirthItem[] = $main;
+                // }
+                // if($main['fuel_id'] == 4){
+                //     $fourthItem[] = $main;
+                // }
+                // if($main['fuel_id'] == 5){
+                //     $fifthItem[] = $main;
+                // }
 
-     $data =  [0 => 
-          [
-              'labels' => $label, 
-              'backgroundColor' => $bgColor,
-              'data' => $data
-          ], 
-         ];
-        return response()->json($data)->setEncodingOptions(JSON_NUMERIC_CHECK);
+             }
+        }    
+        $firstData = collect($firstItem)->map(function($item){
+            return $item['total_output'];
+        });
+       $secondData = collect($secontItem)->map(function($item){
+            return $item['total_output'];
+        }); 
+    //    $thirthData = collect($thirthItem)->map(function($item){
+    //         return $item['total_output'];
+    //     }); 
+    //    $fourthData = collect($fourthItem)->map(function($item){
+    //         return $item['total_output'];
+    //     }); 
+    //    $fifthData = collect($fifthItem)->map(function($item){
+    //         return $item['total_output'];
+    //     });  
+    if($data == $today){
+        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
+    }elseif($data == $subday){
+        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
+    }elseif($data == $subday1){
+        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
+    }elseif($data == $subday2){
+        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
+    }elseif($data == $subday3){
+        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
+    }elseif($data == $subday4){
+        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
+    }
+    $fuels->map(function($itm) use ($firstData,$secondData) /*,$thirthData,$fourthData,$fifthData */ {   
+        if($itm->id == 1){
+            $data = $firstData;
+            $itm['data'] = $data;
+            return $itm;  
+        }
+        if($itm->id == 2){
+            $data = $secondData;
+            $itm['data'] = $data;
+            return $itm;  
+        } 
+       //  if($itm->id == 3){
+       //      $data = $thirthData;
+       //      $itm['data'] = $data;
+       //      return $itm;  
+       //  } 
+       //  if($itm->id == 4){
+       //      $data = $fourthData;
+       //      $itm['data'] = $data;
+       //      return $itm;  
+       //  } 
+       //  if($itm->id == 5){
+       //      $data = $fifthData;
+       //      $itm['data'] = $data;
+       //      return $itm;  
+       //  } 
+     });
+    return response()->json($fuels)->setEncodingOptions(JSON_NUMERIC_CHECK); 
     }
 
-
+     /**
+     * 
+     * start coding for distribution info method
+     * 
+     */
     public function CapacityChart()
     {
         $fuels = Fuel::select('id', 'total', 'bg_color')->get();
@@ -252,7 +389,6 @@ class HomeController extends Controller
             $bg_color[] = $fuel->bg_color;
         }
         $data = array_merge(['data' => $data, 'backgroundColor' => $bg_color]);
-
         return response()->json($data)->setEncodingOptions(JSON_NUMERIC_CHECK);
     }
     /**

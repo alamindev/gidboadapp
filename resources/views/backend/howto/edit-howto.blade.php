@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col-lg-12 col-md-6 col-sm-7">
           <h2 class="top-dashboard">Dashboard</h2>
-  @include('_includes/breadcrumb')
+      @include('_includes/breadcrumb')
         </div>
       </div>
     </div>
@@ -21,20 +21,25 @@
     <div class="heading">
       <h3 class="font-bold col-teal">Update Help And About us</h3>
     </div>
+    <div class="card">
+      <div class="card-body p-4">
+          <howto-upload></howto-upload>
+      </div>
+    </div>
     <!--end user heading -->
     <form action="{{ route('howtos.update',$edit->id) }}" method="post">
       @csrf @method('PUT')
       <div class="row clearfix">
         <div class="col-lg-12">
-          <div class="card m-t-30">
+          <div class="card m-t-30"> 
             <div class="card-body p-2">
               <div class="form-group {{ $errors->has('help') ? 'is-invalid' : '' }}">
-                <label for="help">Add Chart Infomation<span class="text-danger">*</span></label>
+                <label for="help">Add Chart Infomation <span class="text-danger">*</span></label>
                 <textarea name="help" id="help" cols="30" rows="10">{{ $edit->help }}</textarea>
                 <span class="text-danger">{{ $errors->has('help') ? $errors->first('help') : '' }}</span>
               </div>
               <div class="form-group {{ $errors->has('about ') ? 'is-invalid' : '' }}">
-                <label for="about ">Add Chart Infomation<span class="text-danger">*</span></label>
+                <label for="about ">Add Chart Infomation <span class="text-danger">*</span></label>
                 <textarea name="about" id="about" cols="30" rows="10">{{ $edit->about  }}</textarea>
                 <span class="text-danger">{{ $errors->has('about ') ? $errors->first('about ') : '' }}</span>
               </div>
@@ -55,6 +60,9 @@
  @push('scripts')
 <script src="{{ asset('assets/plugins/ckeditor/ckeditor.js') }}"></script>
 <script>
+  var app = new Vue({
+        el: '#app', 
+    });
   $(function () {
     //CKEditor
     CKEDITOR.replace('help');

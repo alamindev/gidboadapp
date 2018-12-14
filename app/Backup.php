@@ -1,15 +1,14 @@
 <?php
 
-namespace App;
+namespace App; 
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model; 
 
-class Backup extends Model
-{
-    protected $fillable = [
-        'total_output'
-    ];
-    public function fuel_backup()
+class Backup extends Model {
+protected $fillable = [
+            'total_output'
+        ]; 
+      public function fuel_backup()
     {
         return $this->belongsTo(Fuel::class, 'fuel_id', 'id');
     }

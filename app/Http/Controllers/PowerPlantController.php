@@ -95,6 +95,7 @@ class PowerPlantController extends Controller
      */
     public function update(Request $request, PowerPlant $power)
     {
+     
         $this->validate($request, [
             'fuel_id' => 'required',
             'name' => 'required',
@@ -123,42 +124,50 @@ class PowerPlantController extends Controller
     {
         $time = Carbon::now()->format('H');
         $backups = Backup::whereDate('plant_date', Carbon::today())->get();
-        $powerPlant = PowerPlant::where('fuel_id', $request->fuel_id)->sum('output');
+        $fuels = Fuel::get();
+        $powerUpdate = PowerPlant::where('fuel_id', $request->fuel_id)->sum('output');
+        global $plant_time;
         foreach ($backups as $backup) {
-            $plant_time = Carbon::parse($backup->plant_time)->format('H');
-        }
-        if (empty($plant_time)) {
-            $backup = new Backup();
-            $backup->fuel_id = $request->fuel_id;
-            $backup->total_output = $powerPlant;
-            $backup->plant_time = Carbon::now()->format('H:i:s');
-            $backup->plant_date = Carbon::now()->format('Y-m-d');
-            $backup->save();
-        } else {
+            $plant_time = Carbon::parse($backup->plant_time)->format('H');   
             if ($plant_time == $time) {
                 if ($backup->fuel_id == $request->fuel_id) {
-                    $backup = Backup::find($backup->id)
+                    $backup = Backup::where('id',$backup->id)
                         ->update(
-                            ['total_output' => $powerPlant]
+                            ['total_output' => $powerUpdate]
                         );
-                } else {
-                    $backup = new Backup();
-                    $backup->fuel_id = $request->fuel_id;
-                    $backup->total_output = $powerPlant;
-                    $backup->plant_time = Carbon::now()->format('H:i:s');
-                    $backup->plant_date = Carbon::now()->format('Y-m-d');
-                    $backup->save();
-                }
-            } else {
+                } 
+            } 
+        } //end backups foreach; 
+   
+        if (empty($plant_time)) {
+            foreach($fuels as $fuel){
+            $powerPlant = PowerPlant::where('fuel_id',$fuel->id)->sum('output');
                 $backup = new Backup();
-                $backup->fuel_id = $request->fuel_id;
+                $backup->fuel_id = $fuel->id;
                 $backup->total_output = $powerPlant;
                 $backup->plant_time = Carbon::now()->format('H:i:s');
                 $backup->plant_date = Carbon::now()->format('Y-m-d');
+                $backup->time = Carbon::now()->format('H');
                 $backup->save();
+            } 
+        } 
+        if($plant_time != null){
+            if ($plant_time != $time) {
+                foreach($fuels as $fuel){
+                    $powerPlant = PowerPlant::where('fuel_id',$fuel->id)->sum('output');
+                    $backup = new Backup();
+                    $backup->fuel_id = $fuel->id;
+                    $backup->total_output = $powerPlant;
+                    $backup->plant_time = Carbon::now()->format('H:i:s');
+                    $backup->plant_date = Carbon::now()->format('Y-m-d');
+                    $backup->time = Carbon::now()->format('H');
+                    $backup->save();
+                } 
             }
         }
+         
     }
+
 
 
     /**
