@@ -215,83 +215,85 @@ class HomeController extends Controller
      */
     public function Trends()
     {    
-        
-          return view('frontend.trends.trend');
+       return view('frontend.trends.trend');
  
     }
     public function tempFuel()
     {
-        $subday = Carbon::now()->subDays(1)->format('Y-m-d');
-        $subday1 = Carbon::now()->subDays(2)->format('Y-m-d');
-        $subday2 = Carbon::now()->subDays(3)->format('Y-m-d');
-        $subday3 = Carbon::now()->subDays(4)->format('Y-m-d');
-        $subday4 = Carbon::now()->subDays(5)->format('Y-m-d');
-        $today = Carbon::now()->format('Y-m-d');
-        $backupdata = Backup::select('plant_date')->get();
+        $today = Carbon::now()->format('Y-m-d'); 
         $Hour  = Backup::latest()->first();  
         $latesthour =  $Hour->time; //find out time only for where clause in down 
-        global $data; 
-        
-        //foreach loop for subdata
-        foreach($backupdata as $backup){ 
-            $data = $backup->plant_date; 
-        }//end backup foreach loop   
+        global $todaydata;  
+        global $beforedaydata;  
+
+        //get today data 
+       $getTodays = Backup::where('plant_date',$today)->select('plant_date')->get();
+        foreach($getTodays as $getToday){ 
+            $todaydata = $getToday->plant_date; 
+        }
+        // get before days data
+        $beforedays = Backup::where('plant_date','!=',$today)->select('plant_date')->orderby('plant_date','ASC')->get();
+        foreach($beforedays as $beforeday){ 
+            $beforedaydata = $beforeday->plant_date; 
+        }
+
         $length = 24;  
         $datas = [];
+        $item = ''; 
         for($i=0; $i < $length; $i++){  
-            $filter = sprintf("%02d", $i); 
-            if($filter == $i){ 
-                if($data == $today){  
-                        $times = Backup::where('plant_date',$today)  
-                        ->where('time',$filter)
-                        ->select('time')
-                        ->first();  
-                        if($times != ''){
-                            $datas[] = Backup::where('plant_date',$today)  
-                            ->where('time',$filter)
-                            ->select('id','fuel_id','total_output')
-                            ->get();  
-                        }else{ 
-                            $datas[] = Backup::where('plant_date',$today)  
-                            ->where('time',$latesthour)
+            $filter = sprintf("%02d", $i); // for before 0;  
+            $times = Backup::where('plant_date',$today)  
+                ->where('time', $filter)
+                ->select('time')
+                ->first();   
+            $time = $times['time'];  
+            $beforeHours = Backup::where('plant_date',$today)  
+                ->where('time', 02)
+                ->select('time')
+                ->first();   
+            $beforeHour = $beforeHours['time'];    
+            if($todaydata){ 
+                if($filter == $time){
+                    $datas[] = Backup::where('plant_date',$todaydata)  
+                            ->where('time',$time)
                             ->select('id','fuel_id','total_output') 
                             ->get(); 
-                        }     
-                 }elseif($data == $subday){   
-                    $datas[] = Backup::where('plant_date',$subday)  
-                        ->where('time',$latesthour)
+                }else{
+                    if($filter >= $beforeHour){
+                        $datas[] = Backup::where('plant_date',$todaydata)  
+                            ->where('time',$beforeHour)
+                            ->select('id','fuel_id','total_output') 
+                            ->get(); 
+                    } 
+                    else{ 
+                        $beforedays  = Backup::where('plant_date',$beforedaydata)->latest()->first();  
+                        $beforelatesthour =  $beforedays->time; //find out time only for where clause in down 
+
+                        $datas[] = Backup::where('plant_date',$beforedaydata)
+                        ->where('time',$beforelatesthour)   
                         ->select('id','fuel_id','total_output') 
-                        ->get();
-                 }elseif($data == $subday1){   
-                    $datas[] = Backup::where('plant_date',$subday1)  
-                        ->where('time',$latesthour)
-                        ->select('id','fuel_id','total_output') 
-                        ->get();
-                 }
-                 elseif($data == $subday2){   
-                    $datas[] = Backup::where('plant_date',$subday2)  
-                        ->where('time',$latesthour)
-                        ->select('id','fuel_id','total_output') 
-                        ->get();
-                 }elseif($data == $subday3){   
-                    $datas[] = Backup::where('plant_date',$subday3)  
-                        ->where('time',$latesthour)
-                        ->select('id','fuel_id','total_output') 
-                        ->get();
-                 }elseif($data == $subday4){   
-                    $datas[] = Backup::where('plant_date',$subday4)  
-                        ->where('time',$latesthour)
-                        ->select('id','fuel_id','total_output') 
-                        ->get();
-                 }
-            }   
+                        ->get(); 
+                    }
+                }  
+            }
+            if($beforedaydata){
+                $beforedays  = Backup::where('plant_date',$beforedaydata)->latest()->first();  
+                $beforelatesthour =  $beforedays->time; //find out time only for where clause in down 
+
+                $datas[] = Backup::where('plant_date',$beforedaydata)
+                ->where('time',$beforelatesthour)   
+                ->select('id','fuel_id','total_output') 
+                ->get(); 
+            }
             
+            // for stop output if for loop hour==now()
              $now =  Carbon::now()->format('H');
              if($now == $filter){
                   break;
              }   
-        }
-         $collections = collect($datas)->flatten(1)->groupBy('fuel_id')->toArray(); 
+        }   
+    
+        $collections = collect($datas)->flatten(1)->groupBy('fuel_id')->toArray(); 
            
         foreach($collections as $collection){ 
              foreach($collection as $main){  
@@ -328,19 +330,9 @@ class HomeController extends Controller
     //    $fifthData = collect($fifthItem)->map(function($item){
     //         return $item['total_output'];
     //     });  
-    if($data == $today){
-        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
-    }elseif($data == $subday){
-        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
-    }elseif($data == $subday1){
-        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
-    }elseif($data == $subday2){
-        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
-    }elseif($data == $subday3){
-        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
-    }elseif($data == $subday4){
-        $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
-    }
+
+
+    $fuels = Fuel::with('backup')->select('id', 'name', 'logo', 'bg_color as backgroundColor')->get();
     $fuels->map(function($itm) use ($firstData,$secondData) /*,$thirthData,$fourthData,$fifthData */ {   
         if($itm->id == 1){
             $data = $firstData;
@@ -366,7 +358,7 @@ class HomeController extends Controller
        //      $data = $fifthData;
        //      $itm['data'] = $data;
        //      return $itm;  
-       //  } 
+       //  }  
      });
     return response()->json($fuels)->setEncodingOptions(JSON_NUMERIC_CHECK); 
     }
